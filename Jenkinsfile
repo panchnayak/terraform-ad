@@ -69,7 +69,6 @@ pipeline {
                         }
                         bat 'dir'
                         bat "terraform destroy -auto-approve"
-                        s3Delete
                         withAWS(region: "us-east-1") {
                             s3Delete(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/terraform.tfstate', force:true)
                             s3Delete(file:'windows-key-pair.pem', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/windows-key-pair.pem', force:true)  

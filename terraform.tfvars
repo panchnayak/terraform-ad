@@ -18,5 +18,5 @@ windows_domain_member_count = 2
 app_environment = "test"
 
 # Active Directory Settings
-windows_ad_domain_name   = "crit.theocc.local"
+windows_ad_domain_name   = "crit.nessdemo.local"
 windows_ad_safe_password = "abc123def456xyz789"

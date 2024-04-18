@@ -8,7 +8,7 @@ pipeline {
               properties([
                         parameters([
                             choice(choices: ['Default: Do Nothing', 'QTS_RTOP','QTS_Chicago','QTS_Dallas','AWS_us-east-2', 'AWS_us-west-2'],name: 'Select_The_Region', description: 'Select the Region'),
-                            choice(choices: ['Default: Do Nothing', 'theocc.net','crit.theocc.net', 'ds.theocc.net'],name: 'Select_The_Domain', description: 'Select the Domain'),
+                            choice(choices: ['Default: Do Nothing', 'nessdemo.local','crit.nessdemo.local', 'ds.nessdemo.local'],name: 'Select_The_Domain', description: 'Select the Domain'),
                             choice(choices: ['Default: Do Nothing', 'Deploy', 'Destroy-For-testing-Purposes'],name: 'Terraform_Action', description: 'Select the Action')
                             
                         ])

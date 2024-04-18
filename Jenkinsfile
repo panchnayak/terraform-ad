@@ -9,7 +9,7 @@ pipeline {
                         parameters([
                             choice(choices: ['Default: Do Nothing', 'QTS_RTOP','QTS_Chicago','QTS_Dallas','AWS_us-east-2', 'AWS_us-west-2'],name: 'Select_The_Region', description: 'Select the Region'),
                             choice(choices: ['Default: Do Nothing', 'theocc.net','crit.theocc.net', 'ds.theocc.net'],name: 'Select_The_Domain', description: 'Select the Domain'),
-                            choice(choices: ['Default: Do Nothing', 'Deploy', 'Destroy-For_testing-Purposes'],name: 'Terraform_Action', description: 'Select the Action')
+                            choice(choices: ['Default: Do Nothing', 'Deploy', 'Destroy-For-testing-Purposes'],name: 'Terraform_Action', description: 'Select the Action')
                             
                         ])
                     ])
@@ -34,10 +34,10 @@ pipeline {
             }
         }
         stage('Get the Statefile from S3') {
-            when { expression { params.ACTION_REQUESTING == 'Destroy'  }  }
+            when { expression { params.ACTION_REQUESTING == 'Destroy-For-testing-Purposes'  }  }
             steps {
                 script {
-                    withAWS(credentials: "AWS_CREDS", region: "us-east-1") {
+                    withAWS(region: "us-east-1") {
                         s3Download(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/terraform.tfstate', force:true) 
                     }
                 }
@@ -47,11 +47,8 @@ pipeline {
             when { expression { params.ACTION_REQUESTING == 'Apply'  }  }
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'cloudbees-demo',keyFileVariable: 'SSH_KEY')]) {
-                        sh "echo Plan"
-                        sh 'cp "$SSH_KEY" cloudbees-demo.pem'
-                        sh 'terraform plan -out=tfplan'
-                    }  
+                        bat "echo Plan"
+                        bat 'terraform plan -out=tfplan'
                 }
             }
         }
@@ -59,21 +56,17 @@ pipeline {
             when { expression { params.ACTION_REQUESTING == 'Apply'  }  }
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: 'cloudbees-demo',keyFileVariable: 'SSH_KEY')]) {
-                        sh "echo Applying"
-                        sh 'cp "$SSH_KEY" cloudbees-demo.pem'
-                        sh 'terraform apply -auto-approve tfplan'
-                    }  
+                        bat "echo Applying"
+                        bat 'terraform apply -auto-approve tfplan'
                 }
             }
         }
         stage('Terraform Destroy') {
-            when { expression { params.ACTION_REQUESTING == 'Destroy'  }  }
+            when { expression { params.ACTION_REQUESTING == 'Destroy-For-testing-Purposes'  }  }
             steps {
                 script {
-                    sh "echo Destroying"
-                    sh 'terraform destroy -auto-approve'
-                    
+                    bat "echo Destroying"
+                    bat 'terraform destroy -auto-approve'
                 }
             }
         }
@@ -82,7 +75,7 @@ pipeline {
             when { expression { params.ACTION_REQUESTING == 'Apply'  }  }
             steps {
                 script {
-                    withAWS(credentials: "AWS_CREDS", region: "us-east-1") {
+                    withAWS(region: "us-east-1") {
                         s3Upload(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/')
                     }
                 }
@@ -93,6 +86,5 @@ pipeline {
         always {
             cleanWs()
         }
-    }
     }
 }

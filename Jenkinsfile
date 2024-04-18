@@ -34,7 +34,7 @@ pipeline {
             }
         }
         stage('Terraform Plan') {
-            when { expression { params.ACTION_REQUESTING == 'Apply'  }  }
+            when { expression { params.ACTION_REQUESTING == 'Deploy'  }  }
             steps {
                 script {
                         bat "echo Plan"
@@ -43,7 +43,7 @@ pipeline {
             }
         }
         stage('Terraform Apply') {
-            when { expression { params.ACTION_REQUESTING == 'Apply'  }  }
+            when { expression { params.ACTION_REQUESTING == 'Deploy'  }  }
             steps {
                 script {
                         bat "echo Applying"

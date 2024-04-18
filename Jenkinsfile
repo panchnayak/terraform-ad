@@ -19,8 +19,8 @@ pipeline {
         stage('Checkout Code') {
             steps {
 				script {
-					git url: 'https://github.com/panchnayak/terraform-test.git'
-					sh 'ls -la'
+					git url: 'https://github.com/panchnayak/terraform-ad.git'
+					bat 'dir'
 				}
             }
         }
@@ -29,7 +29,7 @@ pipeline {
             
             steps {
                 script {
-                    sh 'terraform init'
+                    bat 'terraform init'
                 }
             }
         }

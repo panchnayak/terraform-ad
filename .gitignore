@@ -1,4 +1,6 @@
 .vscode
 .git
 .terraform
+.terraform.lock.hcl
+.terraform.tfstate
 .DS_Store

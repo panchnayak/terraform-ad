@@ -19,7 +19,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
 				script {
-					git url: 'https://github.com/panchnayak/terraform-ad.git'
+					git branch: 'main', url: 'https://github.com/panchnayak/terraform-ad.git'
 					bat 'dir'
 				}
             }
@@ -30,16 +30,6 @@ pipeline {
             steps {
                 script {
                     bat 'terraform init'
-                }
-            }
-        }
-        stage('Get the Statefile from S3') {
-            when { expression { params.ACTION_REQUESTING == 'Destroy-For-testing-Purposes'  }  }
-            steps {
-                script {
-                    withAWS(region: "us-east-1") {
-                        s3Download(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/terraform.tfstate', force:true) 
-                    }
                 }
             }
         }
@@ -58,6 +48,11 @@ pipeline {
                 script {
                         bat "echo Applying"
                         bat 'terraform apply -auto-approve tfplan'
+                        
+                        bat echo "Upload State to S3"
+                        withAWS(region: "us-east-1") {
+                        s3Upload(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/')
+                    }
                 }
             }
         }
@@ -65,19 +60,12 @@ pipeline {
             when { expression { params.ACTION_REQUESTING == 'Destroy-For-testing-Purposes'  }  }
             steps {
                 script {
+                    bat echo "Get the Statefile from S3"
+                    withAWS(region: "us-east-1") {
+                        s3Download(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/terraform.tfstate', force:true) 
+                    }
                     bat "echo Destroying"
                     bat 'terraform destroy -auto-approve'
-                }
-            }
-        }
-       
-        stage('Upload State to S3') {
-            when { expression { params.ACTION_REQUESTING == 'Apply'  }  }
-            steps {
-                script {
-                    withAWS(region: "us-east-1") {
-                        s3Upload(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/')
-                    }
                 }
             }
         }

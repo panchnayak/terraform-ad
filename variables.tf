@@ -92,7 +92,7 @@ variable "windows_root_volume_type" {
 variable "windows_ad_domain_name" {
   type        = string
   description = "Active Directory Domain Name"
-  default     = "nessdemo.local"
+  default     = "crit.nessdemo.local"
 }
 
 variable "windows_ad_nebios_name" {

@@ -4,8 +4,6 @@ public_subnet_cidr  = "10.11.1.0/24"
 private_subnet_cidr = "10.11.2.0/24"
 # AWS Settings
 aws_region     = "us-east-2"
-# Windows Virtual Machine
-# windows_instance_name               = "testsrv01"
 windows_instance_type = "t3.large"
 # windows_associate_public_ip_address = true
 windows_root_volume_size    = 100
@@ -19,4 +17,4 @@ app_environment = "test"
 
 # Active Directory Settings
 windows_ad_domain_name   = "crit.nessdemo.local"
-windows_ad_safe_password = "abc123def456xyz789"
+windows_ad_safe_password = "ab12.cd34.xy56"

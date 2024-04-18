@@ -51,7 +51,8 @@ pipeline {
                         bat "echo Upload State to S3"
                         withAWS(region: "us-east-1") {
                             s3Upload(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/')
-                            bat "echo terraform state uploaded"
+                            s3Upload(file:'windows-key-pair.pem', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/')
+                            bat "echo terraform statefile and windows-key-pair.pem file uploaded"
                         }
                         bat "echo Terraform Applied"
                 }
@@ -68,6 +69,12 @@ pipeline {
                         }
                         bat 'dir'
                         bat "terraform destroy -auto-approve"
+                        s3Delete
+                        withAWS(region: "us-east-1") {
+                            s3Delete(file:'terraform.tfstate', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/terraform.tfstate', force:true)
+                            s3Delete(file:'windows-key-pair.pem', bucket:'pnayak-demo-bucket', path:'jenkins-jobs/windows-key-pair.pem', force:true)  
+                        }
+                        bat "echo terraform statefile and windows-key-pair.pem file deleted from s3 bucket"
                 }
             }
         }

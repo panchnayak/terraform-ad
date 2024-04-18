@@ -1,3 +1,4 @@
 .vscode
 .git
 .terraform
+.DS_Store

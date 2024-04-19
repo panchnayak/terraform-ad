@@ -25,7 +25,7 @@ EOF
 
 # Create EC2 Instance
 resource "aws_instance" "windows-server-member" {
-  count                  = var.windows_domain_member_count
+#  count                  = var.windows_domain_member_count
   ami                    = data.aws_ami.windows-member-server.id
   instance_type          = var.windows_instance_type
   subnet_id              = aws_subnet.public-subnet.id
@@ -44,7 +44,8 @@ resource "aws_instance" "windows-server-member" {
   }
 
   tags = {
-    Name        = "windows-server-member-${count.index}"
+#    Name        = "windows-server-member-${count.index}"
+    Name        = "windows-server-member"
     Environment = var.app_environment
   }
 }

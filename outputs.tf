@@ -9,11 +9,11 @@ output "dc_public_ips" {
 }
 
 output "windows_server_member_public_ip_0" {
-  value     = aws_instance.windows-server-member[0].public_ip
+  value     = aws_instance.windows-server-member.public_ip
   sensitive = false
 }
 
-output "windows_server_member_public_ip_1" {
-  value     = aws_instance.windows-server-member[1].public_ip
-  sensitive = false
-}
+# output "windows_server_member_public_ip_1" {
+#  value     = aws_instance.windows-server-member[1].public_ip
+#  sensitive = false
+# }

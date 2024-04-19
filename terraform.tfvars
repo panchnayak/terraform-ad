@@ -4,6 +4,7 @@ public_subnet_cidr  = "10.11.1.0/24"
 private_subnet_cidr = "10.11.2.0/24"
 # AWS Settings
 aws_region     = "us-east-2"
+aws_az         = "us-east-2c"
 windows_instance_type = "t3.large"
 # windows_associate_public_ip_address = true
 windows_root_volume_size    = 100
